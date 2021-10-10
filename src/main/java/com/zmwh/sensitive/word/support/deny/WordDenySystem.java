@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.deny;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.io.StreamUtil;
 import com.zmwh.sensitive.word.api.IWordDeny;
 
@@ -11,7 +10,6 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.13
  */
-@ThreadSafe
 public class WordDenySystem implements IWordDeny {
 
     @Override

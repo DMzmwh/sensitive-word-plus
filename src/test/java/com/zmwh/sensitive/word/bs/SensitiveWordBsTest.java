@@ -23,8 +23,12 @@ public class SensitiveWordBsTest {
     @Test
     public void containsTest() {
         final String text = "123淫荡自慰器dfg";
-        boolean contains = SensitiveWordBs.newInstance().contains(text);
-        System.out.println("---");
+//        boolean contains = SensitiveWordBs.newInstance().contains(text);
+//        System.out.println("---");
+        SensitiveWordBs sensitiveWordTools = SensitiveWordBs.newInstance();
+//        IWordResult iWordResult = sensitiveWordTools.containsP(text);
+        String first = sensitiveWordTools.findFirst(text);
+        System.out.println("----");
     }
 
     /**

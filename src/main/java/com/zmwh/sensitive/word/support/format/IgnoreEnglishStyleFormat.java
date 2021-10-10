@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.format;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.zmwh.sensitive.word.api.ICharFormat;
 import com.zmwh.sensitive.word.api.IWordContext;
 import com.zmwh.sensitive.word.utils.CharUtils;
@@ -10,7 +9,6 @@ import com.zmwh.sensitive.word.utils.CharUtils;
  * @author binbin.hou
  * @since 0.0.6
  */
-@ThreadSafe
 public class IgnoreEnglishStyleFormat implements ICharFormat {
 
     @Override

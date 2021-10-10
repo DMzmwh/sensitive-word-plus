@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.check.impl;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.CharUtil;
 import com.github.houbb.heaven.util.util.regex.RegexUtil;
@@ -25,7 +24,6 @@ import com.zmwh.sensitive.word.support.format.CharFormatChain;
  * @author binbin.hou
  * @since 0.0.9
  */
-@ThreadSafe
 public class SensitiveCheckEmail implements ISensitiveCheck {
 
     @Override

@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.map;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.FileUtil;
@@ -16,7 +15,6 @@ import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
 import com.zmwh.sensitive.word.support.check.SensitiveCheckResult;
 import com.zmwh.sensitive.word.support.check.impl.SensitiveCheckChain;
 import com.zmwh.sensitive.word.support.check.impl.SensitiveCheckUrl;
-import com.zmwh.sensitive.word.support.result.WordResult;
 import com.zmwh.sensitive.word.support.result.WordResult2;
 
 import java.util.HashMap;
@@ -30,7 +28,6 @@ import java.util.Set;
  * @author binbin.hou
  * @since 0.0.1
  */
-@ThreadSafe
 public class SensitiveWordByTypeMap implements IWordByTypeMap {
 
     /**
@@ -81,11 +78,8 @@ public class SensitiveWordByTypeMap implements IWordByTypeMap {
                     } else {
                         //不存在则，则构建一个新的map，同时将isEnd设置为0，因为他不是最后一
                         Map<String, Boolean> newWordMap = new HashMap<>(8);
-                        newWordMap.put(AppConst.IS_END, false);
-
                         // 将新的节点放入当前 map 中
                         currentMap.put(charKey, newWordMap);
-
                         // 将新节点设置为当前节点，方便下一次节点的循环。
                         currentMap = newWordMap;
                     }
@@ -207,7 +201,7 @@ public class SensitiveWordByTypeMap implements IWordByTypeMap {
 
         List<IWordResult> resultList = Guavas.newArrayList();
         for (int i = 0; i < text.length(); i++) {
-            SensitiveCheckResult checkResult = sensitiveCheck(text, i, ValidModeEnum.FAIL_OVER, context);
+            SensitiveCheckResult checkResult = sensitiveCheck(text, i, modeEnum, context);
             // 命中
             int wordLength = checkResult.index();
             if (wordLength > 0) {

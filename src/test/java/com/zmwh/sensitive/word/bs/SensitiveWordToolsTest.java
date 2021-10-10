@@ -1,9 +1,6 @@
 package com.zmwh.sensitive.word.bs;
 
-import com.github.houbb.heaven.support.instance.Instance;
 import com.zmwh.sensitive.word.api.IWordResult;
-import com.zmwh.sensitive.word.support.allow.WordAllows;
-import com.zmwh.sensitive.word.support.deny.WordDenys;
 import com.zmwh.sensitive.word.support.iword.WordSystem;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,8 +22,11 @@ public class SensitiveWordToolsTest {
      */
     @Test
     public void containsTest() {
-        final String text = "淫荡自慰器dfg";
-        IWordResult iWordResult = SensitiveWordTools.newInstance().containsP(text);
+        final String text = "淫淫淫淫荡自慰器dfg";
+        SensitiveWordTools sensitiveWordTools = SensitiveWordTools.newInstance();
+        IWordResult iWordResult = sensitiveWordTools.containsP(text);
+        String first = sensitiveWordTools.findFirst(text);
+        List<String> all = sensitiveWordTools.findAll(text);
         System.out.println("----");
     }
 

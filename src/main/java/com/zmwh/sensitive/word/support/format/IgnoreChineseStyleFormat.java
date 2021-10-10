@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.format;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.opencc4j.core.impl.ZhConvertBootstrap;
 import com.github.houbb.opencc4j.support.segment.impl.CharSegment;
 import com.zmwh.sensitive.word.api.ICharFormat;
@@ -11,7 +10,6 @@ import com.zmwh.sensitive.word.api.IWordContext;
  * @author binbin.hou
  * @since 0.0.5
  */
-@ThreadSafe
 public class IgnoreChineseStyleFormat implements ICharFormat {
 
     @Override

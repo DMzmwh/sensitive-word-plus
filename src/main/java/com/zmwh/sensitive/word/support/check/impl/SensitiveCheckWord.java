@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.check.impl;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.zmwh.sensitive.word.api.IWordContext;
@@ -17,7 +16,6 @@ import java.util.Map;
  * @author binbin.hou
  * @since 0.0.5
  */
-@ThreadSafe
 public class SensitiveCheckWord implements ISensitiveCheck {
 
     @Override

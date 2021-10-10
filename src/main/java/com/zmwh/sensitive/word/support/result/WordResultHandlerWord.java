@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.result;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.zmwh.sensitive.word.api.IWordResult;
 import com.zmwh.sensitive.word.api.IWordResultHandler;
 
@@ -10,7 +9,6 @@ import com.zmwh.sensitive.word.api.IWordResultHandler;
  * @author binbin.hou
  * @since 0.1.0
  */
-@ThreadSafe
 public class WordResultHandlerWord implements IWordResultHandler<String> {
 
     @Override

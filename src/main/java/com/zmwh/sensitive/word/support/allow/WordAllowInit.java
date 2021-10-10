@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.allow;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.pipeline.Pipeline;
 import com.github.houbb.heaven.support.pipeline.impl.DefaultPipeline;
 import com.zmwh.sensitive.word.api.IWordAllow;
@@ -14,7 +13,6 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.13
  */
-@ThreadSafe
 public abstract class WordAllowInit implements IWordAllow {
 
     /**

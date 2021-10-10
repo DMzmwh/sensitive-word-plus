@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.data;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.StreamUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
@@ -15,7 +14,6 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.1
  */
-@ThreadSafe
 public class SensitiveWordData implements IWordData {
 
     /**

@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.map;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.github.houbb.heaven.util.io.FileUtil;
@@ -29,7 +28,6 @@ import java.util.Map;
  * @author binbin.hou
  * @since 0.0.1
  */
-@ThreadSafe
 public class SensitiveWordMap implements IWordMap {
 
     /**
@@ -180,7 +178,7 @@ public class SensitiveWordMap implements IWordMap {
 
         List<IWordResult> resultList = Guavas.newArrayList();
         for (int i = 0; i < text.length(); i++) {
-            SensitiveCheckResult checkResult = sensitiveCheck(text, i, ValidModeEnum.FAIL_OVER, context);
+            SensitiveCheckResult checkResult = sensitiveCheck(text, i,modeEnum, context);
             // 命中
             int wordLength = checkResult.index();
             if (wordLength > 0) {

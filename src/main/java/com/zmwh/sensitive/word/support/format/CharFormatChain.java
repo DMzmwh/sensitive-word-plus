@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.format;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
 import com.zmwh.sensitive.word.api.ICharFormat;
@@ -13,7 +12,6 @@ import java.util.List;
  * @author binbin.hou
  * @since 0.0.5
  */
-@ThreadSafe
 public class CharFormatChain implements ICharFormat {
 
     @Override

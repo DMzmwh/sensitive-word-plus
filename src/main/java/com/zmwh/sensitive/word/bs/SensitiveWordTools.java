@@ -9,7 +9,6 @@ import com.zmwh.sensitive.word.api.*;
 import com.zmwh.sensitive.word.support.iword.WordSystem;
 import com.zmwh.sensitive.word.support.map.SensitiveWordByTypeMap;
 import com.zmwh.sensitive.word.support.result.WordResultHandlers;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
 

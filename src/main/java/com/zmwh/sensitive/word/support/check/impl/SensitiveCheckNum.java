@@ -1,6 +1,5 @@
 package com.zmwh.sensitive.word.support.check.impl;
 
-import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.zmwh.sensitive.word.api.IWordContext;
 import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
@@ -15,7 +14,6 @@ import com.zmwh.sensitive.word.support.format.CharFormatChain;
  * @author binbin.hou
  * @since 0.0.5
  */
-@ThreadSafe
 public class SensitiveCheckNum implements ISensitiveCheck {
 
     @Override

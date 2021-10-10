@@ -51,23 +51,19 @@ v0.1.0 变更：
 
 ## 准备
 
-- JDK1.7+
+- JDK1.8+
 
 - Maven 3.x+
 
 ## Maven 引入
 
 ```xml
-<dependency>
-    <groupId>com.github.houbb</groupId>
-    <artifactId>sensitive-word</artifactId>
-    <version>0.1.0</version>
-</dependency>
+自行打包
 ```
 
 ## api 概览
 
-`SensitiveWordHelper` 作为敏感词的工具类，核心方法如下：
+`SensitiveWordTools` 作为敏感词的工具类，核心方法如下：
 
 | 方法 | 参数 | 返回值| 说明 |
 |:---|:---|:---|:---|
@@ -93,14 +89,12 @@ IWordResultHandler 可以对敏感词的结果进行处理，允许用户自定�
 
 ## 使用实例
 
-所有测试案例参见 [SensitiveWordHelperTest](https://github.com/houbb/sensitive-word/blob/master/src/test/java/com/github/houbb/sensitive/word/core/SensitiveWordHelperTest.java)
-
 ### 判断是否包含敏感词
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-Assert.assertTrue(SensitiveWordHelper.contains(text));
+IWordResult iWordResult = SensitiveWordTools.newInstance().containsP(text);
 ```
 
 ### 返回第一个敏感词
@@ -108,14 +102,14 @@ Assert.assertTrue(SensitiveWordHelper.contains(text));
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-String word = SensitiveWordHelper.findFirst(text);
+String word = SensitiveWordTools.findFirst(text);
 Assert.assertEquals("五星红旗", word);
 ```
 
-SensitiveWordHelper.findFirst(text) 等价于：
+SensitiveWordTools.findFirst(text) 等价于：
 
 ```java
-String word = SensitiveWordHelper.findFirst(text, WordResultHandlers.word());
+String word = SensitiveWordTools.findFirst(text, WordResultHandlers.word());
 ```
 
 WordResultHandlers.raw() 可以保留对应的下标信息：
@@ -123,7 +117,7 @@ WordResultHandlers.raw() 可以保留对应的下标信息：
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-IWordResult word = SensitiveWordHelper.findFirst(text, WordResultHandlers.raw());
+IWordResult word = SensitiveWordTools.findFirst(text, WordResultHandlers.raw());
 Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}", word.toString());
 ```
 
@@ -132,16 +126,16 @@ Assert.assertEquals("WordResult{word='五星红旗', startIndex=0, endIndex=4}",
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordTools.findAll(text);
 Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
 ```
 
-返回所有敏感词用法上类似于 SensitiveWordHelper.findFirst()，同样也支持指定结果处理类。
+返回所有敏感词用法上类似于 SensitiveWordTools.findFirst()，同样也支持指定结果处理类。
 
-SensitiveWordHelper.findAll(text) 等价于：
+SensitiveWordTools.findAll(text) 等价于：
 
 ```java
-List<String> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.word());
+List<String> wordList = SensitiveWordTools.findAll(text, WordResultHandlers.word());
 ```
 
 WordResultHandlers.raw() 可以保留对应的下标信息：
@@ -149,7 +143,7 @@ WordResultHandlers.raw() 可以保留对应的下标信息：
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-List<IWordResult> wordList = SensitiveWordHelper.findAll(text, WordResultHandlers.raw());
+List<IWordResult> wordList = SensitiveWordTools.findAll(text, WordResultHandlers.raw());
 Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4}, WordResult{word='毛主席', startIndex=9, endIndex=12}, WordResult{word='天安门', startIndex=18, endIndex=21}]", wordList.toString());
 ```
 
@@ -157,7 +151,7 @@ Assert.assertEquals("[WordResult{word='五星红旗', startIndex=0, endIndex=4},
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-String result = SensitiveWordHelper.replace(text);
+String result = SensitiveWordTools.replace(text);
 Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
 ```
 
@@ -165,7 +159,7 @@ Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result)
 
 ```java
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-String result = SensitiveWordHelper.replace(text, '0');
+String result = SensitiveWordTools.replace(text, '0');
 Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
 ```
 
@@ -180,7 +174,7 @@ Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result)
 ```java
 final String text = "fuCK the bad words.";
 
-String word = SensitiveWordHelper.findFirst(text);
+String word = SensitiveWordTools.findFirst(text);
 Assert.assertEquals("fuCK", word);
 ```
 
@@ -189,7 +183,7 @@ Assert.assertEquals("fuCK", word);
 ```java
 final String text = "ｆｕｃｋ the bad words.";
 
-String word = SensitiveWordHelper.findFirst(text);
+String word = SensitiveWordTools.findFirst(text);
 Assert.assertEquals("ｆｕｃｋ", word);
 ```
 
@@ -200,7 +194,7 @@ Assert.assertEquals("ｆｕｃｋ", word);
 ```java
 final String text = "这个是我的微信：9⓿二肆⁹₈③⑸⒋➃㈤㊄";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordTools.findAll(text);
 Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString());
 ```
 
@@ -209,7 +203,7 @@ Assert.assertEquals("[9⓿二肆⁹₈③⑸⒋➃㈤㊄]", wordList.toString())
 ```java
 final String text = "我爱我的祖国和五星紅旗。";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordTools.findAll(text);
 Assert.assertEquals("[五星紅旗]", wordList.toString());
 ```
 
@@ -218,7 +212,7 @@ Assert.assertEquals("[五星紅旗]", wordList.toString());
 ```java
 final String text = "Ⓕⓤc⒦ the bad words";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordTools.findAll(text);
 Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```
 
@@ -238,7 +232,7 @@ Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
 ```java
 final String text = "楼主好人，邮箱 sensitiveword@xx.com";
 
-List<String> wordList = SensitiveWordHelper.findAll(text);
+List<String> wordList = SensitiveWordTools.findAll(text);
 Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 ```
 
