@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>2.3.0.RELEASE</version>-->
+<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+<!--    </parent>-->
+
+    <groupId>com.zmwh</groupId>
+    <artifactId>sensitive-word-plus</artifactId>
+    <version>1.0.1</version>
+
+
+    <properties>
+        <skipTests>true</skipTests>
+        <java.version>1.8</java.version>
+        <junit.version>4.13.1</junit.version>
+        <heaven.version>0.1.129</heaven.version>
+        <opencc4j.version>1.2.0</opencc4j.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>opencc4j</artifactId>
+                <version>${opencc4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.github.houbb</groupId>
+                        <artifactId>heaven</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.huaban</groupId>
+                        <artifactId>jieba-analysis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>heaven</artifactId>
+                <version>${heaven.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+                <optional>true</optional>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>opencc4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+<!--    $ git remote add gitee @git/gitee.com:admin/demo.git-->
+<!--    $ git remote add githob @git/github.com:admin/demo.git-->
+    <!--============================== ADD For sonatype START ==============================-->
+    <name>sensitive-word-plus</name>
+    <description>DFA来过滤敏感词工具。--- The sensitive word tool for java with DFA.</description>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <compilerArgs>
+                            <compilerArg>-Xlint:deprecation</compilerArg>
+                            <compilerArg>-Xlint:unchecked</compilerArg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-jar-plugin</artifactId>-->
+<!--                    <version>3.2.0</version>-->
+<!--                </plugin>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-resources-plugin</artifactId>-->
+<!--                    <version>3.2.0</version>-->
+<!--                </plugin>-->
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
