@@ -17,7 +17,7 @@ public class WordDenySystem implements IWordDeny {
     @Override
     public List<String> deny() {
         List<String> results = StreamUtil.readAllLines("/dict.txt");
-        results.addAll(StreamUtil.readAllLines("/dict_en.txt"));
+//        results.addAll(StreamUtil.readAllLines("/dict_en.txt"));
         results.addAll(StreamUtil.readAllLines("/sensitive_word_deny.txt"));
         return results;
     }

@@ -27,7 +27,7 @@ public class SensitiveCheckWord implements ISensitiveCheck {
         // 记录敏感词的长度
         int lengthCount = 0;
         int actualLength = 0;
-
+        Integer sensitiveType = 0;
         for (int i = beginIndex; i < txt.length(); i++) {
             // 获取当前的 map 信息
             nowMap = getNowMap(nowMap, context, txt, i);
@@ -36,13 +36,13 @@ public class SensitiveCheckWord implements ISensitiveCheck {
                 lengthCount++;
 
                 // 判断是否是敏感词的结尾字，如果是结尾字则判断是否继续检测
-                boolean isEnd = isEnd(nowMap);
-                if (isEnd) {
+                Integer isEnd = isEnd(nowMap);
+                if (isEnd!=null) {
                     // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。
                     // eg: 敏感词 敏感词xxx
                     // 如果是 【敏感词x】也会被匹配。
                     actualLength = lengthCount;
-
+                    sensitiveType = isEnd;
                     // 这里确实需要一种验证模式，主要是为了最大匹配从而达到最佳匹配的效果。
                     if (ValidModeEnum.FAIL_FAST.equals(validModeEnum)) {
                         break;
@@ -54,7 +54,7 @@ public class SensitiveCheckWord implements ISensitiveCheck {
             }
         }
 
-        return SensitiveCheckResult.of(actualLength, SensitiveCheckWord.class);
+        return SensitiveCheckResult.of(actualLength, sensitiveType, SensitiveCheckWord.class);
     }
 
     /**
@@ -64,17 +64,20 @@ public class SensitiveCheckWord implements ISensitiveCheck {
      * @return 是否结束
      * @since 0.0.9
      */
-    private static boolean isEnd(final Map map) {
+    private static Integer isEnd(final Map map) {
         if(ObjectUtil.isNull(map)) {
-            return false;
+            return null;
         }
 
         Object value = map.get(AppConst.IS_END);
         if(ObjectUtil.isNull(value)) {
-            return false;
+            return null;
+        }
+        if (value instanceof Boolean){
+            return (boolean) value ? 0 : null;
         }
 
-        return (boolean)value;
+        return (Integer) value;
     }
     /**
      * 获取当前的 Map

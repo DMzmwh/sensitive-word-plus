@@ -15,6 +15,13 @@ public class SensitiveCheckResult {
      */
     private int index;
 
+
+    /**
+     * 敏感词类型
+     * @since 0.0.12
+     */
+    private int sensitiveType;
+
     /**
      * 检测类
      * @since 0.0.12
@@ -35,12 +42,40 @@ public class SensitiveCheckResult {
         return result;
     }
 
+
+    /**
+     * 实例化
+     * @param index 返回索引
+     * @param index 异常类型
+     * @param checkClass 验证类
+     * @return 结果
+     * @since 0.0.12
+     */
+    public static SensitiveCheckResult of(final int index,final int sensitiveType,
+                                          final Class<? extends ISensitiveCheck> checkClass) {
+        SensitiveCheckResult result = new SensitiveCheckResult();
+        result.index(index)
+                .sensitiveType(sensitiveType)
+                .checkClass(checkClass);
+        return result;
+    }
+
     public int index() {
         return index;
     }
 
     public SensitiveCheckResult index(int index) {
         this.index = index;
+        return this;
+    }
+
+
+    public int sensitiveType() {
+        return sensitiveType;
+    }
+
+    public SensitiveCheckResult sensitiveType(int sensitiveType) {
+        this.sensitiveType = sensitiveType;
         return this;
     }
 

@@ -9,9 +9,17 @@ import com.zmwh.sensitive.word.api.IWordResult;
 public class WordResult implements IWordResult {
 
     private String word;
-
+    /**
+     * 开始下标
+     * @return 开始下标
+     * @since 0.1.0
+     */
     private int startIndex;
-
+    /**
+     * 结束下标
+     * @return 结束下标
+     * @since 0.1.0
+     */
     private int endIndex;
 
     public static WordResult newInstance() {
@@ -28,7 +36,6 @@ public class WordResult implements IWordResult {
         return this;
     }
 
-    @Override
     public int startIndex() {
         return startIndex;
     }
@@ -38,7 +45,6 @@ public class WordResult implements IWordResult {
         return this;
     }
 
-    @Override
     public int endIndex() {
         return endIndex;
     }

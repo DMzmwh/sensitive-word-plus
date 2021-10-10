@@ -1,0 +1,83 @@
+package com.zmwh.sensitive.word.api;
+
+import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
+import com.zmwh.sensitive.word.support.check.ISensitiveCheck;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 敏感词 map
+ * @author binbin.hou
+ * @since 0.0.1
+ */
+public interface IWordByTypeMap extends ISensitiveCheck {
+
+
+    /**
+     * 初始化敏感词 map
+     * @param map 集合信息
+     * @param mapSize 初始化敏感词库大小
+     * @since 0.0.1
+     */
+    void initWordMap(HashMap<Integer, Set<String>> map,int mapSize);
+
+    /**
+     * 是否包含敏感词
+     * @param string 字符串
+     * @param context 上下文
+     * @return 是否包含
+     * @since 0.0.1
+     * @see ValidModeEnum#FAIL_FAST 建议使用快速返回模式
+     */
+    boolean contains(final String string,
+                     final IWordContext context);
+
+    /**
+     * 是否包含敏感词
+     * @param string 字符串
+     * @param context 上下文
+     * @return 异常内容
+     * @since 1.0.1
+     * @see ValidModeEnum#FAIL_FAST 建议使用快速返回模式
+     */
+    IWordResult containsP(final String string,
+                     final IWordContext context);
+
+    /**
+     * 返回所有对应的敏感词
+     * @param string 原始字符串
+     * @param context 上下文
+     * @return 结果
+     * @since 0.0.1
+     * @see ValidModeEnum#FAIL_OVER 建议使用全部检测返回模式
+     */
+    List<IWordResult> findAll(final String string,
+                         final IWordContext context);
+
+    /**
+     * 返回第一个对应的敏感词
+     * @param string 原始字符串
+     * @param context 上下文
+     * @return 结果
+     * @since 0.0.1
+     */
+    IWordResult findFirst(final String string,
+                     final IWordContext context);
+
+    /**
+     * 替换所有敏感词内容
+     *
+     * ps: 这里可以添加优化。
+     *
+     * @param target 目标字符串
+     * @param replaceChar 替换为的 char
+     * @param context 上下文
+     * @return 替换后结果
+     * @since 0.0.2
+     */
+    String replace(final String target, final char replaceChar,
+                   final IWordContext context);
+
+}

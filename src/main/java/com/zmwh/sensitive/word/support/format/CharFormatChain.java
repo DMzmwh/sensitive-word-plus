@@ -3,8 +3,8 @@ package com.zmwh.sensitive.word.support.format;
 import com.github.houbb.heaven.annotation.ThreadSafe;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.guava.Guavas;
-import com.zmwh.sensitive.word.api.IWordContext;
 import com.zmwh.sensitive.word.api.ICharFormat;
+import com.zmwh.sensitive.word.api.IWordContext;
 
 import java.util.List;
 

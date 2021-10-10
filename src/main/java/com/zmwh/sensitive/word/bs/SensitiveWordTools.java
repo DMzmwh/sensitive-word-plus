@@ -2,15 +2,16 @@ package com.zmwh.sensitive.word.bs;
 
 import com.github.houbb.heaven.constant.CharConst;
 import com.github.houbb.heaven.support.handler.IHandler;
+import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.zmwh.sensitive.word.api.*;
-import com.zmwh.sensitive.word.support.allow.WordAllows;
-import com.zmwh.sensitive.word.support.deny.WordDenys;
-import com.zmwh.sensitive.word.support.map.SensitiveWordMap;
+import com.zmwh.sensitive.word.support.iword.WordSystem;
+import com.zmwh.sensitive.word.support.map.SensitiveWordByTypeMap;
 import com.zmwh.sensitive.word.support.result.WordResultHandlers;
+import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 敏感词引导类
@@ -33,7 +34,7 @@ public class SensitiveWordTools {
      *
      * @since 0.0.1
      */
-    private IWordMap sensitiveWordMap;
+    private IWordByTypeMap sensitiveWordByTypeMap;
 
     /**
      * 默认的执行上下文
@@ -43,16 +44,10 @@ public class SensitiveWordTools {
     private final IWordContext context = buildDefaultContext();
 
     /**
-     * 禁止的单词
-     * @since 0.0.13
+     * 处理敏感词语结果
+     * @since 1.0.1
      */
-    private IWordDeny wordDeny = WordDenys.system();
-
-    /**
-     * 允许的单词
-     * @since 0.0.13
-     */
-    private IWordAllow wordAllow = WordAllows.system();
+    private IWord iWord = Instances.singleton(WordSystem.class);
 
     /**
      * DCL 初始化 wordMap 信息
@@ -62,17 +57,33 @@ public class SensitiveWordTools {
      */
     private synchronized void initWordMap() {
         // 加载配置信息
-        List<String> denyList = wordDeny.deny();
-        List<String> allowList = wordAllow.allow();
-        List<String> results = CollectionUtil.difference(denyList, allowList);
+        Set<String> allow = iWord.allow();
+        HashMap<Integer, Set<String>> sensitive = iWord.sensitive();
+        HashMap<Integer, Set<String>> integerListHashMap = iWord.appendSensitive();
+        if (integerListHashMap != null){
+            for (Integer key : integerListHashMap.keySet()) {
+                Set<String> list = sensitive.getOrDefault(key, new HashSet<>());
+                list.addAll(integerListHashMap.get(key));
+            }
+        }
+
+        int mapSize = 0;
+        Collection<Set<String>> values = sensitive.values();
+        for (Set<String> value : values) {
+            if (CollectionUtil.isNotEmpty(allow)){
+                value.removeAll(allow);
+            }
+            mapSize = mapSize + value.size();
+        }
 
         // 初始化 DFA 信息
-        if(sensitiveWordMap == null) {
-            sensitiveWordMap = new SensitiveWordMap();
+        if(sensitiveWordByTypeMap == null) {
+            sensitiveWordByTypeMap = new SensitiveWordByTypeMap();
         }
         // 便于可以多次初始化
-        sensitiveWordMap.initWordMap(results);
+        sensitiveWordByTypeMap.initWordMap(sensitive,mapSize);
     }
+
 
     /**
      * 新建验证实例
@@ -99,27 +110,15 @@ public class SensitiveWordTools {
         return this;
     }
 
-    /**
-     * 设置禁止的实现
-     * @param wordDeny 禁止的实现
-     * @return this
-     * @since 0.0.13
-     */
-    public SensitiveWordTools wordDeny(IWordDeny wordDeny) {
-        ArgUtil.notNull(wordDeny, "wordDeny");
-        this.wordDeny = wordDeny;
-        return this;
-    }
 
     /**
-     * 设置允许的实现
-     * @param wordAllow 允许的实现
-     * @return this
-     * @since 0.0.13
+     * 处理敏感词语结果
+     * @param iWord
+     * @return
      */
-    public SensitiveWordTools wordAllow(IWordAllow wordAllow) {
-        ArgUtil.notNull(wordAllow, "wordAllow");
-        this.wordAllow = wordAllow;
+    public SensitiveWordTools iWord(IWord iWord) {
+        ArgUtil.notNull(iWord, "IWord");
+        this.iWord = iWord;
         return this;
     }
 
@@ -259,7 +258,19 @@ public class SensitiveWordTools {
     public boolean contains(final String target) {
         statusCheck();
 
-        return sensitiveWordMap.contains(target, context);
+        return sensitiveWordByTypeMap.contains(target, context);
+    }
+    /**
+     * 是否包含敏感词
+     *
+     * @param target 目标字符串
+     * @return 是否
+     * @since 异常内容
+     */
+    public IWordResult containsP(final String target) {
+        statusCheck();
+
+        return sensitiveWordByTypeMap.containsP(target, context);
     }
 
     /**
@@ -300,7 +311,7 @@ public class SensitiveWordTools {
         ArgUtil.notNull(handler, "handler");
         statusCheck();
 
-        List<IWordResult> wordResults = sensitiveWordMap.findAll(target, context);
+        List<IWordResult> wordResults = sensitiveWordByTypeMap.findAll(target, context);
         return CollectionUtil.toList(wordResults, new IHandler<IWordResult, R>() {
             @Override
             public R handle(IWordResult wordResult) {
@@ -323,7 +334,7 @@ public class SensitiveWordTools {
         ArgUtil.notNull(handler, "handler");
         statusCheck();
 
-        IWordResult wordResult = sensitiveWordMap.findFirst(target, context);
+        IWordResult wordResult = sensitiveWordByTypeMap.findFirst(target, context);
         return handler.handle(wordResult);
     }
 
@@ -339,7 +350,7 @@ public class SensitiveWordTools {
     public String replace(final String target, final char replaceChar) {
         statusCheck();
 
-        return sensitiveWordMap.replace(target, replaceChar, context);
+        return sensitiveWordByTypeMap.replace(target, replaceChar, context);
     }
 
     /**
@@ -361,9 +372,9 @@ public class SensitiveWordTools {
      */
     private void statusCheck(){
         //DLC
-        if(sensitiveWordMap == null) {
+        if(sensitiveWordByTypeMap == null) {
             synchronized (this) {
-                if(sensitiveWordMap == null) {
+                if(sensitiveWordByTypeMap == null) {
                     this.init();
                 }
             }

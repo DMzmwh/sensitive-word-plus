@@ -1,10 +1,7 @@
-# sensitive-word
+# sensitive-word-plus
 
-[sensitive-word](https://github.com/houbb/sensitive-word) 基于 DFA 算法实现的高性能敏感词工具。
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.houbb/sensitive-word/badge.svg)](http://mvnrepository.com/artifact/com.github.houbb/sensitive-word)
-[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/houbb/sensitive-word)
-[![](https://img.shields.io/badge/license-Apache2-FF0080.svg)](https://github.com/houbb/sensitive-word/blob/master/LICENSE.txt)
+[sensitive-word-plus](https://github.com/DMzmwh/sensitive-word-plus) 基于 DFA 算法实现的高性能敏感词工具。
+站在巨人肩膀上，本项目是根据[sensitive-word](https://github.com/houbb/sensitive-word) 做的升级
 
 ## 创作目的
 

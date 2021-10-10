@@ -22,6 +22,7 @@
         <junit.version>4.13.1</junit.version>
         <heaven.version>0.1.129</heaven.version>
         <opencc4j.version>1.2.0</opencc4j.version>
+        <commons-collections4>4.4</commons-collections4>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,6 +78,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4}</version>
+        </dependency>
+
     </dependencies>
 
 <!--    $ git remote add gitee @git/gitee.com:admin/demo.git-->

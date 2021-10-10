@@ -80,14 +80,14 @@ public class DataInitTest {
         allLines.addAll(distinctLines("不正当竞争.txt"));
         allLines.addAll(distinctLines("人名.txt"));
         allLines.addAll(distinctLines("其他.txt"));
-        allLines.addAll(distinctLines("广告.txt"));
+        allLines.addAll(distinctLines("advertising.txt"));
         allLines.addAll(distinctLines("房产.txt"));
-        allLines.addAll(distinctLines("政治类.txt"));
+        allLines.addAll(distinctLines("political.txt"));
         allLines.addAll(distinctLines("新闻实事.txt"));
         allLines.addAll(distinctLines("暴力.txt"));
         allLines.addAll(distinctLines("毒品.txt"));
         allLines.addAll(distinctLines("网址.txt"));
-        allLines.addAll(distinctLines("色情类.txt"));
+        allLines.addAll(distinctLines("porn.txt"));
         allLines.addAll(distinctLines("辱骂.txt"));
         allLines.addAll(distinctLines("邪教.txt"));
 

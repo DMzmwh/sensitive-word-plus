@@ -1,20 +1,23 @@
 package com.zmwh.sensitive.word.bs;
 
+import com.github.houbb.heaven.support.instance.Instance;
+import com.zmwh.sensitive.word.api.IWordResult;
 import com.zmwh.sensitive.word.support.allow.WordAllows;
 import com.zmwh.sensitive.word.support.deny.WordDenys;
+import com.zmwh.sensitive.word.support.iword.WordSystem;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 
 /**
- * <p> project: sensitive-word-SensitiveWordBsTest </p>
+ * <p> project: sensitive-word-SensitiveWordToolsTest </p>
  * <p> create on 2020/1/7 23:43 </p>
  *
  * @author Administrator
  * @since 0.0.1
  */
-public class SensitiveWordBsTest {
+public class SensitiveWordToolsTest {
 
     /**
      * 是否包含
@@ -22,9 +25,9 @@ public class SensitiveWordBsTest {
      */
     @Test
     public void containsTest() {
-        final String text = "123淫荡自慰器dfg";
-        boolean contains = SensitiveWordBs.newInstance().contains(text);
-        System.out.println("---");
+        final String text = "淫荡自慰器dfg";
+        IWordResult iWordResult = SensitiveWordTools.newInstance().containsP(text);
+        System.out.println("----");
     }
 
     /**
@@ -33,9 +36,9 @@ public class SensitiveWordBsTest {
      */
     @Test
     public void findAllTest() {
-        final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
+        final String text = "12321淫荡自慰器dfg";
 
-        List<String> wordList = SensitiveWordBs.newInstance().findAll(text);
+        List<String> wordList = SensitiveWordTools.newInstance().findAll(text);
         Assert.assertEquals("[五星红旗, 毛主席, 天安门]", wordList.toString());
     }
 
@@ -47,7 +50,7 @@ public class SensitiveWordBsTest {
     public void findFirstTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordTools.newInstance().findFirst(text);
         Assert.assertEquals("五星红旗", word);
     }
 
@@ -59,7 +62,7 @@ public class SensitiveWordBsTest {
     public void replaceTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.newInstance().replace(text);
+        String result = SensitiveWordTools.newInstance().replace(text);
         Assert.assertEquals("****迎风飘扬，***的画像屹立在***前。", result);
     }
 
@@ -71,7 +74,7 @@ public class SensitiveWordBsTest {
     public void replaceCharTest() {
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
 
-        String result = SensitiveWordBs.newInstance().replace(text, '0');
+        String result = SensitiveWordTools.newInstance().replace(text, '0');
         Assert.assertEquals("0000迎风飘扬，000的画像屹立在000前。", result);
     }
 
@@ -83,7 +86,7 @@ public class SensitiveWordBsTest {
     public void ignoreCaseTest() {
         final String text = "fuCK the bad words.";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordTools.newInstance().findFirst(text);
         Assert.assertEquals("fuCK", word);
     }
 
@@ -95,15 +98,14 @@ public class SensitiveWordBsTest {
     public void ignoreWidthTest() {
         final String text = "ｆｕｃｋ the bad words.";
 
-        String word = SensitiveWordBs.newInstance().findFirst(text);
+        String word = SensitiveWordTools.newInstance().findFirst(text);
         Assert.assertEquals("ｆｕｃｋ", word);
     }
 
     @Test
     public void configTest() {
-        SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-                .wordDeny(WordDenys.system())
-                .wordAllow(WordAllows.system())
+        SensitiveWordTools wordBs = SensitiveWordTools.newInstance()
+                .iWord(new WordSystem())
                 .init();
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
