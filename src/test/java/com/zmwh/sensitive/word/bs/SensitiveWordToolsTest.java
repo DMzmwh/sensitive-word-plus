@@ -104,12 +104,12 @@ public class SensitiveWordToolsTest {
 
     @Test
     public void configTest() {
-        SensitiveWordTools wordBs = SensitiveWordTools.newInstance()
+        SensitiveWordTools wordTools = SensitiveWordTools.newInstance()
                 .iWord(new WordSystem())
                 .init();
 
         final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-        Assert.assertTrue(wordBs.contains(text));
+        Assert.assertTrue(wordTools.contains(text));
     }
 
 }

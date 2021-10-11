@@ -221,7 +221,7 @@ Assert.assertEquals("[Ⓕⓤc⒦]", wordList.toString());
 ```java
 final String text = "ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦ the bad words";
 
-List<String> wordList = SensitiveWordBs.newInstance()
+List<String> wordList = SensitiveWordTools.newInstance()
         .ignoreRepeat(true)
         .findAll(text);
 Assert.assertEquals("[ⒻⒻⒻfⓤuⓤ⒰cⓒ⒦]", wordList.toString());
@@ -248,10 +248,10 @@ Assert.assertEquals("[sensitiveword@xx.com]", wordList.toString());
 
 为了让使用更加优雅，统一使用 fluent-api 的方式定义。
 
-用户可以使用 `SensitiveWordBs` 进行如下定义：
+用户可以使用 `SensitiveWordTools` 进行如下定义：
 
 ```java
-SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
+SensitiveWordTools wordTools = SensitiveWordTools.newInstance()
         .ignoreCase(true)
         .ignoreWidth(true)
         .ignoreNumStyle(true)
@@ -264,7 +264,7 @@ SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
         .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-Assert.assertTrue(wordBs.contains(text));
+Assert.assertTrue(wordTools.contains(text));
 ```
 ## 配置说明
 
@@ -288,32 +288,53 @@ Assert.assertTrue(wordBs.contains(text));
 
 有时候我们希望将敏感词的加载设计成动态的，比如控台修改，然后可以实时生效。
 
-v0.0.13 支持了这种特性。
+v1.0.0 支持了这种特性。
 
 ## 接口说明
 
-为了实现这个特性，并且兼容以前的功能，我们定义了两个接口。
+为了实现这个特性，并且兼容以前的功能。
 
-### IWordDeny
+### IWord
 
 接口如下，可以自定义自己的实现。
 
 返回的列表，表示这个词是一个敏感词。
 
 ```java
+
 /**
- * 拒绝出现的数据-返回的内容被当做是敏感词
- * @author binbin.hou
- * @since 0.0.13
+ * 处理敏感词语结果
+ * @author dmzmwh
+ * @since 1.0.0
  */
-public interface IWordDeny {
+public interface IWord {
 
     /**
-     * 获取结果
+     * 返回的内容不被当做敏感词
      * @return 结果
      * @since 0.0.13
      */
-    List<String> deny();
+    Set<String> allow();
+
+
+    
+    /**
+     * 返回的内容被当做是敏感词
+     * 默认有值
+     * @return 结果
+     * @since 1.0.0
+     */
+    default HashMap<Integer,Set<String>> sensitive(){return null;}
+
+
+    /**
+     * 扩展的数据 新兴敏感词
+     * 返回的内容被当做是敏感词
+     * 默认为空
+     * @return 敏感词
+     * @since 1.0.0
+     */
+    HashMap<Integer,Set<String>> appendSensitive();
 
 }
 ```
@@ -321,71 +342,95 @@ public interface IWordDeny {
 比如：
 
 ```java
-public class MyWordDeny implements IWordDeny {
 
-    @Override
-    public List<String> deny() {
-        return Arrays.asList("我的自定义敏感词");
-    }
-
-}
-```
-
-### IWordAllow
-
-接口如下，可以自定义自己的实现。
-
-返回的列表，表示这个词不是一个敏感词。
-
-```java
 /**
- * 允许的内容-返回的内容不被当做敏感词
- * @author binbin.hou
- * @since 0.0.13
+ * 系统默认的信息
+ * @author dmzmwh
+ * @since 1.0.0
  */
-public interface IWordAllow {
+public class MyWord implements IWord {
 
     /**
-     * 获取结果
-     * @return 结果
-     * @since 0.0.13
+     * 系统默认非敏感词信息
+     * @return
      */
-    List<String> allow();
-
-}
-```
-
-如：
-
-```java
-public class MyWordAllow implements IWordAllow {
-
     @Override
-    public List<String> allow() {
-        return Arrays.asList("五星红旗");
+    public Set<String> allow() {
+        Set allow = new HashSet();
+		allow.add("排除掉当前词语");
+		allow.add("测试");
+        return allow;
     }
 
+    /**
+     * 系统默认敏感词语 可不重写 有默认实现
+     * @return
+     */
+    @Override
+    public HashMap<Integer,Set<String>> sensitive() {
+        /**
+         * UNKNOWN(0, "未知的"),
+         * POLITICAL(1, "政治"),
+         * PORN(2, "色情"),
+         * ADVERTISING(3, "广告"),
+         * VIOLENCE(4, "暴力");
+         */
+
+        //后期优化工具类，直接返回Set集合
+        Set dictSet = new HashSet();
+		dicSet.add("我的自定义敏感词");
+        Set advertisingSet = new HashSet();
+		advertisingSet.add("买一赠一");
+		advertisingSet.add("新年过节不收礼");
+        Set violenceSet = new HashSet();
+		violenceSet.add("杀头");
+		violenceSet.add("杀头直播");
+        HashMap<Integer, Set<String>> map = new HashMap<>();
+        map.put(WordTypeEnum.UNKNOWN.getKey(),dictSet);
+		map.put(WordTypeEnum.ADVERTISING.getKey(),advertisingSet);
+        map.put(WordTypeEnum.VIOLENCE.getKey(),violenceSet);
+
+        return map;
+    }
+
+    /**
+     * 追加敏感词语
+     * @return
+     */
+    @Override
+    public HashMap<Integer, Set<String>> appendSensitive() {
+        List<String> sensitive_word_deny = StreamUtil.readAllLines("/sensitive_word_deny.txt");
+        HashMap<Integer, List<String>> map = new HashMap<>();
+		Set set = new HashSet();
+		set.add("买一赠一");
+		set.add("新年过节不收礼");
+		map.put(WordTypeEnum.ADVERTISING.getKey(),set);	
+	
+	
+        return map;
+    }
 }
+
 ```
+
 
 ## 配置使用
 
 **接口自定义之后，当然需要指定才能生效。**
 
-为了让使用更加优雅，我们设计了引导类 `SensitiveWordBs`。
+为了让使用更加优雅，我们设计了引导类 `SensitiveWordTools`。
 
-可以通过 wordDeny() 指定敏感词，wordAllow() 指定非敏感词，通过 init() 初始化敏感词字典。
+可以通过 iWord() 设置，通过 init() 初始化敏感词字典。
 
 ### 系统的默认配置
 
 ```java
-SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-        .wordDeny(WordDenys.system())
-        .wordAllow(WordAllows.system())
-        .init();
+SensitiveWordTools wordTools = SensitiveWordTools.newInstance()
+                .iWord(new WordSystem())
+                .init();
 
 final String text = "五星红旗迎风飘扬，毛主席的画像屹立在天安门前。";
-Assert.assertTrue(wordBs.contains(text));
+Assert.assertTrue(wordTools.contains(text));
 ```
 
 备注：init() 对于敏感词 DFA 的构建是比较耗时的，一般建议在应用初始化的时候**只初始化一次**。而不是重复初始化！
@@ -397,12 +442,10 @@ Assert.assertTrue(wordBs.contains(text));
 ```java
 String text = "这是一个测试，我的自定义敏感词。";
 
-SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-        .wordDeny(new MyWordDeny())
-        .wordAllow(new MyWordAllow())
-        .init();
-
-Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString());
+SensitiveWordTools wordTools = SensitiveWordTools.newInstance()
+                .iWord(new MyWord())
+                .init();
+Assert.assertEquals("[我的自定义敏感词]", wordTools.findAll(text).toString());
 ```
 
 这里只有 `我的自定义敏感词` 是敏感词，而 `测试` 不是敏感词。
@@ -411,33 +454,7 @@ Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString(
 
 可以使用下面的方式。
 
-### 同时配置多个
 
-- 多个敏感词
-
-`WordDenys.chains()` 方法，将多个实现合并为同一个 IWordDeny。
-
-- 多个白名单
-
-`WordAllows.chains()` 方法，将多个实现合并为同一个 IWordAllow。
-
-例子：
-
-```java
-String text = "这是一个测试。我的自定义敏感词。";
-
-IWordDeny wordDeny = WordDenys.chains(WordDenys.system(), new MyWordDeny());
-IWordAllow wordAllow = WordAllows.chains(WordAllows.system(), new MyWordAllow());
-
-SensitiveWordBs wordBs = SensitiveWordBs.newInstance()
-        .wordDeny(wordDeny)
-        .wordAllow(wordAllow)
-        .init();
-
-Assert.assertEquals("[我的自定义敏感词]", wordBs.findAll(text).toString());
-```
-
-这里都是同时使用了系统默认配置，和自定义的配置。
 
 # spring 整合
 
@@ -471,14 +488,14 @@ public class SpringSensitiveWordConfig {
      * @since 1.0.0
      */
     @Bean
-    public SensitiveWordBs sensitiveWordBs() {
-        SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
+    public SensitiveWordTools sensitiveWordTools() {
+        SensitiveWordTools sensitiveWordTools = SensitiveWordTools.newInstance()
                 .wordAllow(WordAllows.chains(WordAllows.system(), myDdWordAllow))
                 .wordDeny(myDdWordDeny)
                 // 各种其他配置
                 .init();
 
-        return sensitiveWordBs;
+        return sensitiveWordTools;
     }
 
 }
@@ -490,7 +507,7 @@ public class SpringSensitiveWordConfig {
 
 为了保证敏感词修改可以实时生效且保证接口的尽可能简化，此处没有新增 add/remove 的方法。
 
-而是在调用 `sensitiveWordBs.init()` 的时候，根据 IWordDeny+IWordAllow 重新构建敏感词库。
+而是在调用 `SensitiveWordTools.init()` 的时候，根据 IWordDeny+IWordAllow 重新构建敏感词库。
 
 因为初始化可能耗时较长（秒级别），所有优化为 init 未完成时**不影响旧的词库功能，完成后以新的为准**。
 
@@ -499,7 +516,7 @@ public class SpringSensitiveWordConfig {
 public class SensitiveWordService {
 
     @Autowired
-    private SensitiveWordBs sensitiveWordBs;
+    private SensitiveWordTools SensitiveWordTools;
 
     /**
      * 更新词库
@@ -511,13 +528,13 @@ public class SensitiveWordService {
      */
     public void refresh() {
         // 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法，然后调用这个方法。
-        sensitiveWordBs.init();
+        SensitiveWordTools.init();
     }
 
 }
 ```
 
-如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `sensitiveWordBs.init();`。
+如上，你可以在数据库词库发生变更时，需要词库生效，主动触发一次初始化 `SensitiveWordTools.init();`。
 
 其他使用保持不变，无需重启应用。
 
