@@ -2,8 +2,8 @@ package com.zmwh.sensitive.word.constant.enums;
 
 /**
  * 系统敏感词类型
- * 除1234类型外可自行扩展
- * @author duanchangfu
+ * 自行扩展的话选一个较大的数 从100往后扩展，以免框架定义的和自行扩展的产生冲突
+ * @author dmzmwh
  */
 public enum WordTypeEnum {
 

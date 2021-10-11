@@ -10,7 +10,7 @@ import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.zmwh.sensitive.word.api.IWordContext;
 import com.zmwh.sensitive.word.api.IWordMap;
 import com.zmwh.sensitive.word.api.IWordResult;
-import com.zmwh.sensitive.word.constant.AppConst;
+import com.zmwh.sensitive.word.constant.WordConstants;
 import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
 import com.zmwh.sensitive.word.support.check.SensitiveCheckResult;
 import com.zmwh.sensitive.word.support.check.impl.SensitiveCheckChain;
@@ -79,7 +79,7 @@ public class SensitiveWordMap implements IWordMap {
                 } else {
                     //不存在则，则构建一个新的map，同时将isEnd设置为0，因为他不是最后一
                     Map<String, Boolean> newWordMap = new HashMap<>(8);
-                    newWordMap.put(AppConst.IS_END, false);
+                    newWordMap.put(WordConstants.IS_END, false);
 
                     // 将新的节点放入当前 map 中
                     currentMap.put(charKey, newWordMap);
@@ -90,7 +90,7 @@ public class SensitiveWordMap implements IWordMap {
 
                 // 判断是否为最后一个，添加是否结束的标识。
                 if (i == size - 1) {
-                    currentMap.put(AppConst.IS_END, true);
+                    currentMap.put(WordConstants.IS_END, true);
                 }
             }
         }

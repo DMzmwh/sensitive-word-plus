@@ -3,7 +3,7 @@ package com.zmwh.sensitive.word.support.check.impl;
 import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.lang.ObjectUtil;
 import com.zmwh.sensitive.word.api.IWordContext;
-import com.zmwh.sensitive.word.constant.AppConst;
+import com.zmwh.sensitive.word.constant.WordConstants;
 import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
 import com.zmwh.sensitive.word.support.check.ISensitiveCheck;
 import com.zmwh.sensitive.word.support.check.SensitiveCheckResult;
@@ -67,7 +67,7 @@ public class SensitiveCheckWord implements ISensitiveCheck {
             return null;
         }
 
-        Object value = map.get(AppConst.IS_END);
+        Object value = map.get(WordConstants.IS_END);
         if(ObjectUtil.isNull(value)) {
             return null;
         }

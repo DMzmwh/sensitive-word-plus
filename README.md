@@ -37,15 +37,7 @@
 
 - 支持数据的数据动态更新，实时生效
 
-## 变更日志
 
-[CHANGE_LOG.md](https://github.com/houbb/sensitive-word/blob/master/doc/CHANGE_LOG.md)
-
-v0.1.0 变更：
-
-- 返回敏感词对应的开始结束下标信息
-
-- 优化词库
 
 # 快速开始
 

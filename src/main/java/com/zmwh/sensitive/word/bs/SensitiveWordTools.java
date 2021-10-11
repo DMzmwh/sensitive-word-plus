@@ -66,13 +66,13 @@ public class SensitiveWordTools {
             }
         }
 
-        int mapSize = 0;
         Collection<Set<String>> values = sensitive.values();
+        HashSet<String> all = new HashSet<>();
         for (Set<String> value : values) {
             if (CollectionUtil.isNotEmpty(allow)){
                 value.removeAll(allow);
             }
-            mapSize = mapSize + value.size();
+            all.addAll(value);
         }
 
         // 初始化 DFA 信息
@@ -80,7 +80,7 @@ public class SensitiveWordTools {
             sensitiveWordByTypeMap = new SensitiveWordByTypeMap();
         }
         // 便于可以多次初始化
-        sensitiveWordByTypeMap.initWordMap(sensitive,mapSize);
+        sensitiveWordByTypeMap.initWordMap(sensitive,all.size());
     }
 
 

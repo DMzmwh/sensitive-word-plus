@@ -10,7 +10,7 @@ import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.zmwh.sensitive.word.api.IWordByTypeMap;
 import com.zmwh.sensitive.word.api.IWordContext;
 import com.zmwh.sensitive.word.api.IWordResult;
-import com.zmwh.sensitive.word.constant.AppConst;
+import com.zmwh.sensitive.word.constant.WordConstants;
 import com.zmwh.sensitive.word.constant.enums.ValidModeEnum;
 import com.zmwh.sensitive.word.support.check.SensitiveCheckResult;
 import com.zmwh.sensitive.word.support.check.impl.SensitiveCheckChain;
@@ -87,7 +87,7 @@ public class SensitiveWordByTypeMap implements IWordByTypeMap {
                     // 判断是否为最后一个，添加是否结束的标识。
                     // 结束标识赋值敏感词类型
                     if (i == size - 1) {
-                        currentMap.put(AppConst.IS_END, key);
+                        currentMap.put(WordConstants.IS_END, key);
                     }
                 }
             }
