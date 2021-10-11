@@ -63,11 +63,17 @@ public class SensitiveWordTools {
         HashMap<Integer, Set<String>> appendSensitive = iWord.appendSensitive();
         if (appendSensitive != null){
             for (Integer key : appendSensitive.keySet()) {
+                //汇总追加的数据
                 Set<String> list = sensitive.getOrDefault(key, new HashSet<>());
                 Set<String> appendSensitiveV = appendSensitive.get(key);
                 list.addAll(appendSensitiveV);
+
+                //处理没有分类的敏感词数据
+                Integer key1 = WordTypeEnum.UNKNOWN.getKey();
                 Set<String> unknown = sensitive.get(WordTypeEnum.UNKNOWN.getKey());
-                if (CollectionUtils.isNotEmpty(unknown)){
+                if (!key.equals(key1) &&
+                        CollectionUtils.isNotEmpty(unknown)
+                        && CollectionUtils.isNotEmpty(appendSensitiveV)){
                     //尽可能让敏感词有含义
                     unknown.removeAll(appendSensitiveV);
                 }
