@@ -1,6 +1,6 @@
 package com.zmwh.sensitive.word.spring.service;
 
-import com.zmwh.sensitive.word.bs.SensitiveWordBs;
+import com.zmwh.sensitive.word.bs.SensitiveWordTools;
 import com.zmwh.sensitive.word.spring.annotation.Autowired;
 import com.zmwh.sensitive.word.spring.annotation.Component;
 
@@ -12,7 +12,7 @@ import com.zmwh.sensitive.word.spring.annotation.Component;
 public class SensitiveWordService {
 
     @Autowired
-    private SensitiveWordBs sensitiveWordBs;
+    private SensitiveWordTools sensitiveWordTools;
 
     /**
      * 更新词库
@@ -24,18 +24,18 @@ public class SensitiveWordService {
      */
     public void refresh() {
         // 每次数据库的信息发生变化之后，首先调用更新数据库敏感词库的方法，然后调用这个方法。
-        sensitiveWordBs.init();
+        sensitiveWordTools.init();
     }
 
     /**
      * 是否包含
      *
-     * 可以重新封装，也可以直接使用 sensitiveWordBs
+     * 可以重新封装，也可以直接使用 sensitiveWordTools
      * @param word 单词
      * @return 结果
      */
     public boolean contains(String word){
-        return sensitiveWordBs.contains(word);
+        return sensitiveWordTools.contains(word);
     }
 
 }

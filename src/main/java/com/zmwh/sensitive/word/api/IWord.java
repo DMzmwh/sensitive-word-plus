@@ -1,13 +1,9 @@
 package com.zmwh.sensitive.word.api;
 
-import com.github.houbb.heaven.util.io.StreamUtil;
 import com.zmwh.sensitive.word.constant.enums.WordTypeEnum;
 import com.zmwh.sensitive.word.utils.StreamLineUtil;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -370,7 +370,7 @@ public class MyWord implements IWord {
 
         //后期优化工具类，直接返回Set集合
         Set dictSet = new HashSet();
-		dicSet.add("我的自定义敏感词");
+		dictSet.add("我的自定义敏感词");
         Set advertisingSet = new HashSet();
 		advertisingSet.add("买一赠一");
 		advertisingSet.add("新年过节不收礼");
@@ -391,14 +391,11 @@ public class MyWord implements IWord {
      */
     @Override
     public HashMap<Integer, Set<String>> appendSensitive() {
-        List<String> sensitive_word_deny = StreamUtil.readAllLines("/sensitive_word_deny.txt");
-        HashMap<Integer, List<String>> map = new HashMap<>();
-		Set set = new HashSet();
-		set.add("买一赠一");
-		set.add("新年过节不收礼");
-		map.put(WordTypeEnum.ADVERTISING.getKey(),set);	
-	
-	
+        HashMap<Integer, Set<String>> map = new HashMap<>();
+        Set set = new HashSet();
+        set.add("买一赠一");
+        set.add("新年过节不收礼");
+        map.put(WordTypeEnum.ADVERTISING.getKey(), set);
         return map;
     }
 }

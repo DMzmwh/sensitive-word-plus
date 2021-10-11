@@ -2,10 +2,12 @@ package com.zmwh.sensitive.word.support.iword;
 
 import com.github.houbb.heaven.util.io.StreamUtil;
 import com.zmwh.sensitive.word.api.IWord;
-import com.zmwh.sensitive.word.constant.enums.WordTypeEnum;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 系统默认的信息
