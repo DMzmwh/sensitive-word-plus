@@ -2,6 +2,7 @@ package com.zmwh.sensitive.word.api;
 
 import com.github.houbb.heaven.util.io.StreamUtil;
 import com.zmwh.sensitive.word.constant.enums.WordTypeEnum;
+import com.zmwh.sensitive.word.utils.StreamLineUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.HashMap;
@@ -40,28 +41,22 @@ public interface IWord {
          */
 
         //后期优化工具类，直接返回Set集合
-        List<String> dict = StreamUtil.readAllLines("/dict.txt");
-        Set dictSet = new HashSet();
-        CollectionUtils.addAll(dictSet, dict);
-        List<String> political = StreamUtil.readAllLines("/political.txt");
-        Set politicalSet = new HashSet();
-        CollectionUtils.addAll(politicalSet, political);
-        List<String> porn = StreamUtil.readAllLines("/porn.txt");
-        Set pornSet = new HashSet();
-        CollectionUtils.addAll(pornSet, porn);
-        List<String> advertising = StreamUtil.readAllLines("/advertising.txt");
-        Set advertisingSet = new HashSet();
-        CollectionUtils.addAll(advertisingSet, advertising);
-        List<String> violence = StreamUtil.readAllLines("/violence.txt");
-        Set violenceSet = new HashSet();
-        CollectionUtils.addAll(violenceSet, violence);
+        Set<String> dict = StreamLineUtil.readAllLines("/dict.txt");
+        Set<String> political = StreamLineUtil.readAllLines("/political.txt");
+        dict.removeAll(political);
+        Set<String> porn = StreamLineUtil.readAllLines("/porn.txt");
+        dict.removeAll(porn);
+        Set<String> advertising = StreamLineUtil.readAllLines("/advertising.txt");
+        dict.removeAll(advertising);
+        Set<String> violence = StreamLineUtil.readAllLines("/violence.txt");
+        dict.removeAll(violence);
 
         HashMap<Integer, Set<String>> map = new HashMap<>();
-        map.put(WordTypeEnum.UNKNOWN.getKey(),dictSet);
-        map.put(WordTypeEnum.POLITICAL.getKey(),politicalSet);
-        map.put(WordTypeEnum.PORN.getKey(),pornSet);
-        map.put(WordTypeEnum.ADVERTISING.getKey(),advertisingSet);
-        map.put(WordTypeEnum.VIOLENCE.getKey(),violenceSet);
+        map.put(WordTypeEnum.UNKNOWN.getKey(),dict);
+        map.put(WordTypeEnum.POLITICAL.getKey(),political);
+        map.put(WordTypeEnum.PORN.getKey(),porn);
+        map.put(WordTypeEnum.ADVERTISING.getKey(),advertising);
+        map.put(WordTypeEnum.VIOLENCE.getKey(),violence);
 
         return map;
     }

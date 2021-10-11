@@ -6,9 +6,11 @@ import com.github.houbb.heaven.support.instance.impl.Instances;
 import com.github.houbb.heaven.util.common.ArgUtil;
 import com.github.houbb.heaven.util.util.CollectionUtil;
 import com.zmwh.sensitive.word.api.*;
+import com.zmwh.sensitive.word.constant.enums.WordTypeEnum;
 import com.zmwh.sensitive.word.support.iword.WordSystem;
 import com.zmwh.sensitive.word.support.map.SensitiveWordByTypeMap;
 import com.zmwh.sensitive.word.support.result.WordResultHandlers;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
 
@@ -58,11 +60,17 @@ public class SensitiveWordTools {
         // 加载配置信息
         Set<String> allow = iWord.allow();
         HashMap<Integer, Set<String>> sensitive = iWord.sensitive();
-        HashMap<Integer, Set<String>> integerListHashMap = iWord.appendSensitive();
-        if (integerListHashMap != null){
-            for (Integer key : integerListHashMap.keySet()) {
+        HashMap<Integer, Set<String>> appendSensitive = iWord.appendSensitive();
+        if (appendSensitive != null){
+            for (Integer key : appendSensitive.keySet()) {
                 Set<String> list = sensitive.getOrDefault(key, new HashSet<>());
-                list.addAll(integerListHashMap.get(key));
+                Set<String> appendSensitiveV = appendSensitive.get(key);
+                list.addAll(appendSensitiveV);
+                Set<String> unknown = sensitive.get(WordTypeEnum.UNKNOWN.getKey());
+                if (CollectionUtils.isNotEmpty(unknown)){
+                    //尽可能让敏感词有含义
+                    unknown.removeAll(appendSensitiveV);
+                }
             }
         }
 
@@ -74,7 +82,6 @@ public class SensitiveWordTools {
             }
             all.addAll(value);
         }
-
         // 初始化 DFA 信息
         if(sensitiveWordByTypeMap == null) {
             sensitiveWordByTypeMap = new SensitiveWordByTypeMap();
