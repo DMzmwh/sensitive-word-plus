@@ -4,6 +4,7 @@
 站在巨人肩膀上，本项目是根据[sensitive-word](https://github.com/houbb/sensitive-word) 做的升级
 
 ## 创作目的
+基于sensitive-word-plus 实现返回敏感词类型
 
 实现一款好用敏感词工具。
 
